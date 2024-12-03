@@ -33,7 +33,8 @@ class _LoginPageState extends State<LoginPage> {
         color: Colors.white, // background body putih
         padding: const EdgeInsets.all(15.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start, // Posisi di bagian atas
+          crossAxisAlignment: CrossAxisAlignment.start, // Rata kiri
           children: [
             // bagian input Nama
             TextField(
