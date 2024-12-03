@@ -1,6 +1,6 @@
-# flutter_application_3
+# flutter_assessment2
 
-A new Flutter project.
+A new Flutter project for assessment 2 pemprograman mobile.
 
 ## Getting Started
 
