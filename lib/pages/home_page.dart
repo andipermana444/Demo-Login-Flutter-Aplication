@@ -1,29 +1,72 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Assessment 2',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomePage(),
+    );
+  }
+}
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  static const List<Widget> _pages = <Widget>[
-    Center(child: Text('Home pages', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Product pages', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Contact pages', style: TextStyle(fontSize: 24))),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      setState(() {}); 
     });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _onBottomNavTapped(int index) {
+    _tabController.animateTo(index); 
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Assessment 2')),
+      appBar: AppBar(
+        title: Text(
+          "Assessment 2",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
+        iconTheme: IconThemeData(color: Colors.white),
+        bottom: TabBar(
+          controller: _tabController,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          indicatorColor: Colors.white,
+          tabs: const <Widget>[
+            Tab(text: 'Home'),
+            Tab(text: 'Product'),
+            Tab(text: 'Contact'),
+          ],
+        ),
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -31,7 +74,7 @@ class _HomePageState extends State<HomePage> {
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.blue),
               child: Text(
-                'Menu',
+                'Assessment 2',
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
@@ -39,37 +82,50 @@ class _HomePageState extends State<HomePage> {
               leading: Icon(Icons.home),
               title: Text('Home'),
               onTap: () {
-                setState(() {
-                  _selectedIndex = 0;
-                });
+                _tabController.animateTo(0);
                 Navigator.pop(context);
               },
             ),
+            Divider(),
             ListTile(
               leading: Icon(Icons.shopping_cart),
               title: Text('Product'),
               onTap: () {
-                setState(() {
-                  _selectedIndex = 1;
-                });
+                _tabController.animateTo(1);
                 Navigator.pop(context);
               },
             ),
+            Divider(),
             ListTile(
               leading: Icon(Icons.contact_phone),
               title: Text('Contact'),
               onTap: () {
-                setState(() {
-                  _selectedIndex = 2;
-                });
+                _tabController.animateTo(2);
                 Navigator.pop(context);
               },
             ),
           ],
         ),
       ),
-      body: _pages[_selectedIndex],
+      body: Container(
+        color: Colors.white, // warna background 
+        child: TabBarView(
+          controller: _tabController,
+          children: const <Widget>[
+            Center(child: Text("Home Pages", style: TextStyle(fontSize: 24))),
+            Center(
+                child: Text("Product Pages", style: TextStyle(fontSize: 24))),
+            Center(
+                child: Text("Contact Pages", style: TextStyle(fontSize: 24))),
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        currentIndex: _tabController.index,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        onTap: _onBottomNavTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -84,9 +140,6 @@ class _HomePageState extends State<HomePage> {
             label: 'Contact',
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
       ),
     );
   }
